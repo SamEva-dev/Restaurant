@@ -94,7 +94,7 @@
                                 <VerticalStackLayout>
                                     <Border
                                         BackgroundColor="{StaticResource LightWheat}"
-                                        HeightRequest="150"
+                                        HeightRequest="100"
                                         StrokeThickness="0">
                                         <Image
                                             Aspect="Center"
@@ -288,20 +288,24 @@
                                Style="{StaticResource lbl}"/>
                         <Label Grid.Row="0"
                                Grid.Column="1"
-                               Text="2.99"
-                               HorizontalOptions="Center"/>
+                               Text="{Binding SubTotal, StringFormat='{0:C}'}"/>
 
                         <HorizontalStackLayout Grid.Row="1"
                                                Grid.Column="0"
                                                Spacing="2">
                             <Label Text="Taxt" VerticalOptions="Center" />
-                            <Label Text="0%" Padding="5, 0"
-                                   BackgroundColor="Wheat"/>
+                            <Label Text="{Binding TaxPercentage, StringFormat='{0}%'}"
+                                   Padding="5, 0"
+                                   BackgroundColor="Wheat">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding TaxPercentageClickCommand}" />
+                                </Label.GestureRecognizers>
+                            </Label>
                         </HorizontalStackLayout>
                         <Label Grid.Row="1"
                                Grid.Column="1"
-                               Text="2.99"
-                               HorizontalOptions="Center"/>
+                               HorizontalOptions="Center"
+                               Text="{Binding TaxAmount, StringFormat='{0:C}'}" />
                         <Border Grid.Row="2"
                                 Grid.ColumnSpan="2"
                                 Stroke="Maroon" 
@@ -316,32 +320,34 @@
                         <Label Grid.Row="3"
                                Grid.Column="1"
                                FontAttributes="Bold"
-                               Text="2.99"
+                               Text="{Binding Total, StringFormat='{0:C}'}"
                                HorizontalOptions="Center"/>
                         <Border Grid.Row="4"
                                 Grid.ColumnSpan="2"
                                 Stroke="Maroon" 
                                 StrokeDashArray="20, 5"
-                                StrokeThickness="0.5"/>
+                                StrokeThickness="0.5" />
                         <Grid Grid.Row="5"
                               Grid.ColumnSpan="2"
                               ColumnDefinitions="Auto,*, Auto, Auto"
                               ColumnSpacing="5">
                             
-                        <Button Grid.Column="0" Text="X" 
-                                BackgroundColor="Red"
-                                MinimumHeightRequest="25"
-                                MinimumWidthRequest="25"/>
+                                <Button Grid.Column="0" Text="X" 
+                                        BackgroundColor="Red"
+                                        MinimumHeightRequest="25"
+                                        MinimumWidthRequest="25"
+                                        Command="{Binding ClearCartCommand}"
+                                        ToolTipProperties.Text="Clear the cart" />
                             
-                        <Button Grid.Column="2" Text="Paid Cash" 
-                            BackgroundColor="DarkOliveGreen"
-                            MinimumHeightRequest="25"
-                            MinimumWidthRequest="25"/>
+                                <Button Grid.Column="2" Text="Paid Cash" 
+                                    BackgroundColor="DarkOliveGreen"
+                                    MinimumHeightRequest="25"
+                                    MinimumWidthRequest="25"/>
 
-                        <Button Grid.Column="3" Text="Paid Online" 
-                                BackgroundColor="DarkOliveGreen"
-                                MinimumHeightRequest="25"
-                                MinimumWidthRequest="25"/>
+                                <Button Grid.Column="3" Text="Paid Online" 
+                                        BackgroundColor="DarkOliveGreen"
+                                        MinimumHeightRequest="25"
+                                        MinimumWidthRequest="25"/>
                         </Grid>
 
                     </Grid>
