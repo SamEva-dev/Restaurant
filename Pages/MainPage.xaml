@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RestaurantPosMAUI.Pages.MainPage"
+             xmlns:vm="clr-namespace:RestaurantPosMAUI.ViewModels"
+             xmlns:data="clr-namespace:RestaurantPosMAUI.Data"
+             xmlns:models="clr-namespace:RestaurantPosMAUI.Models"
+             xmlns:controls="clr-namespace:RestaurantPosMAUI.Controls"
+             Shell.NavBarIsVisible="False"
+             x:DataType="vm:HomeViewModel">
+
+    <ScrollView>
+        <Grid ColumnDefinitions=".75*,.25*">
+            <Grid Grid.Column="0" 
+                  RowDefinitions="Auto, Auto, *" 
+                  RowSpacing="15" 
+                  Padding="15">
+                <Label Grid.Row="0" Text="Hello, Abhay Prince" FontSize="22" FontAttributes="Bold"/>
+                <CollectionView Grid.Row="1" ItemsSource="{Binding Categories}">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Horizontal" ItemSpacing="10" />
+                        </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:MenuCategoryModel">
+                            <Border Padding="20, 10" 
+                                    BackgroundColor="{StaticResource LightWheat}"
+                                    StrokeShape="RoundRectangle 10"
+                                    StrokeThickness="0">
+                                <HorizontalStackLayout Spacing="5">
+                                    <Image Source="{Binding Icon}"
+                                           WidthRequest="20" 
+                                           VerticalOptions="Center"/>
+                                    <Label Text="{Binding Name}" 
+                                           VerticalOptions="Center"
+                                           TextColor="Maroon">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="true">
+                                                <Setter Property="TextColor" Value="White" />
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+                                </HorizontalStackLayout>
+                                <Border.Triggers>
+                                    <DataTrigger TargetType="Border" Binding="{Binding IsSelected}" Value="true">
+                                        <Setter Property="Background" Value="Maroon" />
+                                    </DataTrigger>
+                                </Border.Triggers>
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Path=SelectCategoryCommand}" CommandParameter="{Binding Id}" />
+                                </Border.GestureRecognizers>
+                                                   
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                <Grid Grid.Row="2">
+                    <CollectionView ItemsSource="{Binding MenuItems}">
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout 
+                                Orientation="Vertical" 
+                                Span="4" 
+                               HorizontalItemSpacing="10"
+                               VerticalItemSpacing="10"/>
+                        </CollectionView.ItemsLayout>
+
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="data:MenuItem">
+                                <Border Padding="10" 
+                                      StrokeShape="RoundRectangle 10" 
+                                      Stroke="#DDD">
+                                    <VerticalStackLayout>
+                                        <Border BackgroundColor="{StaticResource LightWheat}" 
+                                                  HeightRequest="150"
+                                                  StrokeThickness="0">
+                                            <Image Source="{Binding Icon}" 
+                                                 WidthRequest="250" 
+                                                 MaximumHeightRequest="250"
+                                                 HorizontalOptions="Center"
+                                                 VerticalOptions="Center"
+                                                 Aspect="Center"/>
+                                        </Border>
+                                        <Label Text="{Binding Name}" FontAttributes="Bold" FontSize="20"/>
+                                        <Label Text="{Binding Description}" FontSize="12" TextColor="Gray"/>
+                                        <FlexLayout JustifyContent="SpaceBetween">
+                                            <Label Text="{Binding Price, StringFormat='{0:C}'}" 
+                                                 FontSize="25"
+                                                 FontAttributes="Bold"
+                                                 TextColor="Maroon"/>
+                                            <ImageButton Source="shopping_regular_60.png" 
+                                           BackgroundColor="{StaticResource LightWheat}" CornerRadius="8"
+                                           HeightRequest="25"
+                                           WidthRequest="25"/>
+                                        </FlexLayout>
+
+                                    </VerticalStackLayout>
+                                    
+                                </Border>
+                                
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                    <BoxView IsEnabled="{Binding IsLoading}"
+                           HorizontalOptions="Fill"
+                           VerticalOptions="Fill"
+                           Opacity="0.5"
+                           Color="{StaticResource LightWheat}" />
+                    <ActivityIndicator IsRunning="{Binding IsLoading}" 
+                         HeightRequest="25"
+                         WidthRequest="25"
+                         HorizontalOptions="Center"
+                         VerticalOptions="Center"
+                         Color="Maroon"/>
+                </Grid>
+                
+            </Grid>
+            <Grid Grid.Column="1" BackgroundColor="{StaticResource LightWheat}"
+                  RowDefinitions="Auto, *, Auto" Padding="10">
+                <VerticalStackLayout Grid.Row="0" Spacing="5">
+                    
+                <Label Text="Current Order"
+                       FontSize="25"
+                       FontAttributes="Bold"/>
+                <controls:CurrentDatetimeControl />
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Row="2">
+                    <Sub
+                </VerticalStackLayout>
+
+            </Grid>
+        </Grid>
+    </ScrollView>
+
+</ContentPage>
