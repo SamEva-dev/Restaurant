@@ -6,35 +6,36 @@
     xmlns:local="clr-namespace:RestaurantPosMAUI"
     xmlns:pages="clr-namespace:RestaurantPosMAUI.Pages"
     Title="RestaurantPosMAUI"
-    Shell.FlyoutBehavior="Locked"
     Shell.FlyoutBackgroundColor="Wheat"
+    Shell.FlyoutBehavior="Locked"
     Shell.FlyoutWidth="60">
 
     <ShellContent
         Title="Home"
-        Icon="home_regular_24.png"
         ContentTemplate="{DataTemplate pages:MainPage}"
+        Icon="home_regular_24.png"
         Route="MainPage" />
 
     <ShellContent
-    Title="Orders"
+        Title="Orders"
+        ContentTemplate="{DataTemplate pages:OrdersPage}"
         Icon="list_ul_regular_24.png"
-    ContentTemplate="{DataTemplate pages:OrdersPage}"
-    Route="OrdersPage" />
+        Route="OrdersPage" />
 
     <ShellContent
-    Title="Manage Menu"
+        Title="Manage Menu"
+        ContentTemplate="{DataTemplate pages:ManageMenuItemPage}"
         Icon="grid_alt_regular_24.png"
-    ContentTemplate="{DataTemplate pages:ManageMenuItemPage}"
-    Route="ManageMenuItemPage" />
+        Route="ManageMenuItemPage" />
 
     <Shell.FlyoutFooter>
-        <Image Source="phone_regular_24.png" 
-               HeightRequest="20"
-               WidthRequest="20"
-               Margin="0,0,0,25"
-               HorizontalOptions="Center"
-               Aspect="AspectFit"/>
+        <Image
+            Margin="0,0,0,25"
+            Aspect="AspectFit"
+            HeightRequest="20"
+            HorizontalOptions="Center"
+            Source="phone_regular_24.png"
+            WidthRequest="20" />
     </Shell.FlyoutFooter>
 
 </Shell>

@@ -92,4 +92,21 @@ public partial class HomeViewModel: ObservableObject
             cartItem.Quantity++;
         }
     }
+
+    [RelayCommand]
+    private void IncreaseQuantity(CartModel cartItem) => cartItem.Quantity++;
+
+    [RelayCommand]
+    private void DecreaseQuantity(CartModel cartItem)
+    {
+        cartItem.Quantity--;
+        if(cartItem.Quantity == 0)
+        {
+            CartItems.Remove(cartItem);
+
+        }
+    }
+
+    [RelayCommand]
+    private void RemoveItemFromCart(CartModel cartItem) => CartItems.Remove(cartItem);
 }
