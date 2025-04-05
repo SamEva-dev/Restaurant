@@ -9,7 +9,6 @@
              Shell.NavBarIsVisible="False"
              x:DataType="vm:HomeViewModel">
 
-    <ScrollView>
         <Grid ColumnDefinitions=".75*,.25*">
             <Grid Grid.Column="0" 
                   RowDefinitions="Auto, Auto, *" 
@@ -90,10 +89,14 @@
                                             <ImageButton Source="shopping_regular_60.png" 
                                            BackgroundColor="{StaticResource LightWheat}" CornerRadius="8"
                                            HeightRequest="25"
-                                           WidthRequest="25"/>
+                                           WidthRequest="25"
+                                           Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Path=AddToCartCommand}" CommandParameter="{Binding .}"/>
                                         </FlexLayout>
 
                                     </VerticalStackLayout>
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Path=AddToCartCommand}" CommandParameter="{Binding .}" />
+                                    </Border.GestureRecognizers>
                                     
                                 </Border>
                                 
@@ -123,13 +126,87 @@
                        FontAttributes="Bold"/>
                 <controls:CurrentDatetimeControl />
                 </VerticalStackLayout>
+                <Grid Grid.Row="1" Padding="10" Background="Wheat">
+                <CollectionView 
+                                ItemsSource="{Binding CartItems}" 
+                                >
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="2"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:CartModel">
+                            <Grid>
+                                <Border Padding="5" 
+                                        BackgroundColor="{StaticResource LightWheat}">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="10" />
+                                    </Border.StrokeShape>
+                                    <Grid ColumnDefinitions="60, *" ColumnSpacing="10">
+                                        <Border Grid.Column="0"
+                                                HeightRequest="60"
+                                                WidthRequest="60"
+                                                BackgroundColor="LightGray"
+                                                StrokeShape="ROundRectangle 5">
+                                            <Image Source="{Binding Icon}"
+                                                   HeightRequest="60"
+                                                   WidthRequest="60"
+                                                   Aspect="AspectFit"/>
+                                        </Border>
+                                        <VerticalStackLayout Grid.Column="1" Spacing="5">
+                                            <Label Text="{Binding Name}"
+                                                   FontSize="18"
+                                                   FontAttributes="Bold"/>
+                                            <Grid ColumnDefinitions="Auto, *">
+                                                <Label Grid.Column="0" 
+                                                       Text="{Binding Price, StringFormat='{0:C}'}" 
+                                                       FontSize="18"
+                                                       FontAttributes="Bold"
+                                                       TextColor="Maroon"/>
+                                                    <Grid Grid.Column="1"
+                                                          ColumnDefinitions="*, 2*, *" 
+                                                          WidthRequest="120"
+                                                          HorizontalOptions="End">
+                                                        <ImageButton Grid.Column="0"
+                                                                     Source="minus_regular_24.png" 
+                                                                     MinimumHeightRequest="30"
+                                                                     MinimumWidthRequest="30"
+                                                                     Background="Yellow"
+                                                                     CornerRadius="5"
+                                                                     Padding="5"/>
+                                                    <Label Grid.Column="1"
+                                                               Text="{Binding Quantity}"
+                                                               Background="White"
+                                                               TextColor="Maroon"
+                                                               HorizontalOptions="Center" 
+                                                               HeightRequest="30"
+                                                               WidthRequest="60"
+                                                               FontSize="18"
+                                                               Padding="5"
+                                                               HorizontalTextAlignment="Center"/>
+                                                    <ImageButton Grid.Column="2"
+                                                             Source="plus_regular_24.png" 
+                                                             MinimumHeightRequest="30"
+                                                             MinimumWidthRequest="30"
+                                                             Background="Yellow"
+                                                             CornerRadius="5"/>
+
+                                                </Grid>
+                                            </Grid>
+                                        </VerticalStackLayout>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                
+                    
+                </Grid>
 
                 <VerticalStackLayout Grid.Row="2">
-                    <Sub
                 </VerticalStackLayout>
 
             </Grid>
         </Grid>
-    </ScrollView>
 
 </ContentPage>

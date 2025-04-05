@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using RestaurantPosMAUI.Data;
 using RestaurantPosMAUI.Models;
+using System.Collections.ObjectModel;
 using MenuItem = RestaurantPosMAUI.Data.MenuItem;
 
 namespace RestaurantPosMAUI.ViewModels;
@@ -18,6 +19,8 @@ public partial class HomeViewModel: ObservableObject
 
     [ObservableProperty]
     private MenuCategoryModel? _selectedCategory = null;
+
+    public ObservableCollection<CartModel> CartItems { get; set; } = new();
 
     [ObservableProperty]
     private bool _isLoading;
@@ -66,5 +69,27 @@ public partial class HomeViewModel: ObservableObject
         MenuItems = await _databaseService.GetMenuItemsByCategoryAsync(categoryId);
 
         IsLoading = false;
+    }
+
+    [RelayCommand]
+    private async void AddToCart(MenuItem menuItem)
+    {
+        var cartItem = CartItems.FirstOrDefault(c => c.ItemId == menuItem.Id);
+        if (cartItem == null)
+        {
+            cartItem = new CartModel()
+            {
+                ItemId = menuItem.Id,
+                Icon = menuItem.Icon,
+                Name = menuItem.Name,
+                Price = menuItem.Price,
+                Quantity = 1
+            };
+            CartItems.Add(cartItem);
+        }
+        else
+        {
+            cartItem.Quantity++;
+        }
     }
 }
