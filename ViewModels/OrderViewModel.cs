@@ -3,6 +3,7 @@ using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Mvvm.ComponentModel;
 using RestaurantPosMAUI.Data;
 using RestaurantPosMAUI.Models;
+using System.Collections.ObjectModel;
 namespace RestaurantPosMAUI.ViewModels;
 
 public partial class OrderViewModel: ObservableObject
@@ -13,6 +14,8 @@ public partial class OrderViewModel: ObservableObject
     {
         _databaseService = databaseService;
     }
+
+    public ObservableCollection<Order> Orders { get; set; } = [];
 
     public async Task<bool> PlaceOrderAsync(CartModel[] cartItems, bool isOnline)
     {
@@ -44,5 +47,27 @@ public partial class OrderViewModel: ObservableObject
 
         await Toast.Make("order placed successfully").Show();
         return true;
+    }
+
+    private bool _initialized;
+
+    [ObservableProperty]
+    private bool _isLoading;
+
+    public async Task InitializeAsync()
+    {
+        if (_initialized)
+        {
+            return;
+        }
+        _initialized = true;
+        IsLoading = true;
+
+        var orders = await _databaseService.getOrdersAsync();
+
+        foreach (var order in orders)
+        {
+            Orders.Add(order);
+        }
     }
 }

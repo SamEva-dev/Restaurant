@@ -27,7 +27,7 @@
                 Grid.Row="0"
                 FontAttributes="Bold"
                 FontSize="22"
-                Text="Hello, Abhay Prince" />
+                Text="Hello, Sam FOKAM" />
             <CollectionView Grid.Row="1" ItemsSource="{Binding Categories}">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout ItemSpacing="10" Orientation="Horizontal" />
