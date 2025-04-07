@@ -3,13 +3,16 @@ using CommunityToolkit.Mvvm.Input;
 using RestaurantPosMAUI.Data;
 using RestaurantPosMAUI.Models;
 using System.Collections.ObjectModel;
+using System.Runtime.CompilerServices;
 using MenuItem = RestaurantPosMAUI.Data.MenuItem;
 
 namespace RestaurantPosMAUI.ViewModels;
 
 public partial class HomeViewModel: ObservableObject
 {
-    public DatabaseService _databaseService { get; }
+    private readonly DatabaseService _databaseService;
+
+    private readonly OrderViewModel _orderViewModel;
 
     [ObservableProperty]
     private MenuCategoryModel[] _categories = [];
@@ -37,9 +40,10 @@ public partial class HomeViewModel: ObservableObject
 
     public decimal Total => SubTotal + TaxAmount;
 
-    public HomeViewModel(DatabaseService databaseService)
+    public HomeViewModel(DatabaseService databaseService, OrderViewModel orderViewModel)
     {
         _databaseService = databaseService;
+        _orderViewModel = orderViewModel;
         CartItems.CollectionChanged += CartItems_CollectionChanged;
     }
 
@@ -169,5 +173,18 @@ public partial class HomeViewModel: ObservableObject
 
             TaxPercentage = enteredTaxPercentage;
         }
+    }
+
+    [RelayCommand]
+    private async Task PlaceOrderAsync(bool isPaidOnline)
+    {
+        IsLoading = true;
+
+        if(!await _orderViewModel.PlaceOrderAsync(CartItems.ToArray(), isPaidOnline))
+        {
+            CartItems.Clear();
+        }
+
+        IsLoading = false;
     }
 }

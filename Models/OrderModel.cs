@@ -1,13 +1,14 @@
-﻿using SQLite;
+﻿using RestaurantPosMAUI.Data;
 
-namespace RestaurantPosMAUI.Data;
 
-public class Order
+namespace RestaurantPosMAUI.Models;
+
+public class OrderModel
 {
-    [PrimaryKey, AutoIncrement]
     public long Id { get; set; }
     public DateTime OrderDate { get; set; }
     public int TotalItemsCount { get; set; }
     public decimal TotalAmountPaid { get; set; }
     public string PaymentMode { get; set; }
+    public OrderItem[] Items { get; set; }
 }

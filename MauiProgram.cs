@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Maui.Core;
+﻿using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.Core;
 using Microsoft.Extensions.Logging;
 using RestaurantPosMAUI.Data;
 using RestaurantPosMAUI.Pages;
@@ -20,14 +21,15 @@ namespace RestaurantPosMAUI
                     fonts.AddFont("Nunito-Bold.ttf", "NunitoBold");
                     fonts.AddFont("Nunito-Regular.ttf", "NunitoRegular");
                 })
-                .UseMauiCommunityToolkitCore();
+                .UseMauiCommunityToolkit();
 
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
             builder.Services.AddSingleton<DatabaseService>()
                 .AddSingleton<HomeViewModel>()
-                .AddSingleton<MainPage>();
+                .AddSingleton<MainPage>()
+                .AddSingleton<OrderViewModel>();
 
 
             return builder.Build();

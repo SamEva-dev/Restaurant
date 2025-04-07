@@ -1,4 +1,5 @@
-﻿using SQLite;
+﻿using RestaurantPosMAUI.Models;
+using SQLite;
 
 
 namespace RestaurantPosMAUI.Data;
@@ -54,6 +55,41 @@ WHERE mapping.MenuCategoryId = ?";
         return [..menuItems];
     }
 
+   
+    public async Task<string?> PlaceOrderAsync(OrderModel model)
+    {
+        var order = new Order
+        {
+            OrderDate = model.OrderDate,
+            PaymentMode = model.PaymentMode,
+            TotalItemsCount = model.TotalItemsCount,
+            TotalAmountPaid = model.TotalAmountPaid,
+        };
+
+        if (await _connection.InsertAsync(order) > 0)
+        {
+            foreach (var item in model.Items)
+            {
+                item.OrderId = order.Id;
+            }
+            if(await _connection.InsertAllAsync(model.Items) == 0)
+            {
+                await _connection.DeleteAsync(order);
+                return "Error in inserting order items";
+            }
+        }
+        else
+        {
+            return "Error in inserting the order";
+        }
+
+        model.Id = order.Id;
+        return null;
+    }
+
+    public async Task<Order[]> getOrdersAsync()=> 
+        await _connection.Table<Order>().ToArrayAsync();
+
     public async ValueTask DisposeAsync()
     {
         if (_connection != null)
@@ -61,4 +97,5 @@ WHERE mapping.MenuCategoryId = ?";
             await _connection.CloseAsync();
         }
     }
+
 }

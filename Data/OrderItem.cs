@@ -14,4 +14,6 @@ public class OrderItem
 
     [Ignore]
     public decimal Amout => Quantity * Price;
+
+    public string Icon { get; internal set; }
 }
