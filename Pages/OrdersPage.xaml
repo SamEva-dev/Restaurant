@@ -61,27 +61,41 @@
                                Style="{StaticResource th}"/>
                     </Grid>
 
-                    <CollectionView Grid.Row="1" ItemsSource="{Binding Orders}">
+                    <CollectionView Grid.Row="1" ItemsSource="{Binding Source={x:RelativeSource AncestorType={x:Type vm:OrderViewModel}}, Path=Orders}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="data:Order">
-                                <Grid RowDefinitions="*, Auto" ColumnDefinitions="*,*,*,*,*,*">
-                                    <Label Grid.Column="0" 
+                                <Grid RowDefinitions="4, Auto, Auto" ColumnDefinitions="*,*,*,*,*,*">
+                                    <Label Grid.Row="1"
+                                           Grid.Column="0" 
                                            Text="{Binding Id, StringFormat='#{0}'}"
                                            Style="{StaticResource td}"
                                            Padding="5,0,0,0"/>
-                                    <Label Grid.Column="1" 
+                                    <Label  Grid.Row="1"
+                                            Grid.Column="1" 
                                            Text="{Binding OrderDate, StringFormat='{0:dd MMM yyyy hh:mm tt}'}"
                                            Style="{StaticResource td}"/>
-                                    <Label Grid.Column="2" 
+                                    <Label  Grid.Row="1"
+                                            Grid.Column="2" 
                                            Text="{Binding TotalAmountPaid, StringFormat='{0:C}'}"
                                            Style="{StaticResource td}"/>
-                                    <Label Grid.Column="3" 
+                                    <Label  Grid.Row="1"
+                                            Grid.Column="3" 
                                            Text="{Binding PaymentMode}"
                                            Style="{StaticResource td}"/>
-                                    <Label Grid.Column="4" 
-                                           Text="{Binding TotalItemsCount}"
-                                           Style="{StaticResource td}"/>
-                                    <Button Grid.Column="5" 
+                                    <Label  Grid.Row="1"
+                                            Grid.Column="4" 
+                                           Text="{Binding TotalItemsCount, StringFormat='{0} Item(s)'}"
+                                           Style="{StaticResource td}"
+                                            TextColor="DarkBlue"
+                                            TextDecorations="Underline"
+                                            ToolTipProperties.Text="View order Items">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:OrderViewModel}}, Path=SelectOrderCommand}"
+                                                                    CommandParameter="{Binding .}" />
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                    <Button  Grid.Row="1"
+                                             Grid.Column="5" 
                                             FontSize="14"
                                            Text="View items" 
                                             HeightRequest="30"
@@ -89,9 +103,11 @@
                                             BackgroundColor="DarkOliveGreen"
                                             VerticalOptions="Center"
                                             HorizontalOptions="Center"
-                                            CornerRadius="10"/>
+                                            CornerRadius="10"
+                                             Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:OrderViewModel}}, Path=SelectOrderCommand}"
+                                             CommandParameter="{Binding .}"/>
 
-                                    <BoxView Grid.Row="1"
+                                    <BoxView Grid.Row="2"
                                              Grid.ColumnSpan="6"
                                              HeightRequest="1"
                                              Color="LightGray" />
@@ -120,8 +136,27 @@
              Padding="0,10"
              BackgroundColor="{StaticResource LightWheat}"
              RowDefinitions="Auto,Auto">
-            
-            <Label Text="Selected Order items" Grid.Row="0" />
+
+            <Grid Grid.Row="0" ColumnDefinitions="*, Auto" >
+                <Label Text="Selected Order items" 
+                       Grid.Column="0"
+                       FontAttributes="Bold">
+                    
+                </Label>
+                <ImageButton Grid.Column="1"
+                                 Source="x_regular_24.png" 
+                             HorizontalOptions="End"
+                             VerticalOptions="Start"
+                             BackgroundColor="Red"/>
+
+                <ContentView Grid.Row="1" Background="Wheat" Padding="10">
+                    <CollectionView ItemsSource="{Binding Source={x:RelativeSource AncestorType={x:Type vm:OrderViewModel}}, Path=OrderItems}" >
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="data:OrderItem" />
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </ContentView>
+            </Grid>
             
         </Grid>
     </Grid>

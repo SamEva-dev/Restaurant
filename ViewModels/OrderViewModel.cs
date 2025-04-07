@@ -63,11 +63,26 @@ public partial class OrderViewModel: ObservableObject
         _initialized = true;
         IsLoading = true;
 
-        var orders = await _databaseService.getOrdersAsync();
+        var orders = await _databaseService.GetOrdersAsync();
 
         foreach (var order in orders)
         {
             Orders.Add(order);
         }
+    }
+
+    [ObservableProperty]
+    private OrderItem[] _orderItems = [];
+
+    private async Task SelectOrderAsync(Order? order)
+    {
+        if ( order == null || order.Id == 0)
+        {
+            OrderItems = [];
+            return;
+        }
+        IsLoading = true;
+        OrderItems = await _databaseService.GetOrderItemAsync(order.Id);
+        IsLoading = false;
     }
 }

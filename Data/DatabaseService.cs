@@ -87,8 +87,13 @@ WHERE mapping.MenuCategoryId = ?";
         return null;
     }
 
-    public async Task<Order[]> getOrdersAsync()=> 
+    public async Task<Order[]> GetOrdersAsync()=> 
         await _connection.Table<Order>().ToArrayAsync();
+
+    public async Task<OrderItem[]> GetOrderItemAsync(long orderId) =>
+        await _connection.Table<OrderItem>()
+                        .Where(oi => oi.OrderId == orderId)
+                        .ToArrayAsync();
 
     public async ValueTask DisposeAsync()
     {
